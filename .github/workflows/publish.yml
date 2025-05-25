@@ -26,7 +26,7 @@ jobs:
       - name: Test with Gradle
         run: ./gradlew test
       - name: Publish plugin to Nexus
-        run: ./gradlew publishPluginMavenPublicationToEldoNexusRepository
+        run: ./gradlew publishAllPublicationsToEldoNexusRepository
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}

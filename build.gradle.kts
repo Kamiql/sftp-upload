@@ -16,6 +16,7 @@ repositories {
 dependencies {
     implementation("com.hierynomus:sshj:0.38.0")
     compileOnly(gradleApi())
+    implementation(kotlin("stdlib"))
 }
 
 java {
