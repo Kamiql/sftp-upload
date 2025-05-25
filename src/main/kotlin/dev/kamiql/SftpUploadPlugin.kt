@@ -1,4 +1,4 @@
-package dev.kamiql.gradle
+package dev.kamiql
 
 import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.sftp.SFTPClient
@@ -59,7 +59,7 @@ abstract class SftpUploadTask : DefaultTask() {
             createRemoteDirectory(sftp, config.targetDir)
 
             val remotePath = "${config.targetDir}/${jarFile.name}"
-            logger.lifecycle("\n⬆️  Uploading ${jarFile.name} to $remotePath...")
+            logger.lifecycle("\n⬆️ Uploading ${jarFile.name} to $remotePath...")
 
             sftp.put(jarFile.absolutePath, remotePath)
             logger.lifecycle("\n✅ Successfully uploaded: ${jarFile.name}")
@@ -108,13 +108,13 @@ class SftpUploadPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension = project.extensions.create("sftp", SftpExtension::class.java)
         project.afterEvaluate {
-            project.tasks.register("uploadSFTP", SftpUploadTask::class.java) { task ->
-                task.config = extension
+            project.tasks.register("uploadSFTP", SftpUploadTask::class.java, {
+                config = extension
                 when (extension.buildType) {
-                    BuildType.SHADOW -> task.dependsOn("shadowJar")
-                    BuildType.NORMAL -> task.dependsOn("assemble")
+                    BuildType.SHADOW -> dependsOn("shadowJar")
+                    BuildType.NORMAL -> dependsOn("assemble")
                 }
-            }
+            })
         }
     }
 }

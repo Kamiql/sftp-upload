@@ -1,12 +1,12 @@
 plugins {
-    `java-gradle-plugin`
-    kotlin("jvm") version "1.9.22"
-    `maven-publish`
     id("de.chojo.publishdata") version "1.4.0"
+    kotlin("jvm") version "2.0.0-RC1"
+    `kotlin-dsl`
+    `maven-publish`
+    `java-gradle-plugin`
 }
 
 repositories {
-    maven("https://eldonexus.de/repository/maven-public/")
     mavenCentral()
     gradlePluginPortal()
 }
@@ -16,7 +16,7 @@ dependencies {
     compileOnly(gradleApi())
 }
 
-group = "dev.kamiql.gradle"
+group = "dev.kamiql"
 version = "1.0.0"
 
 publishData {
@@ -45,11 +45,9 @@ publishing {
 
 gradlePlugin {
     plugins {
-        create("sftpUploadPlugin") {
-            id = "dev.kamiql.gradle.sftp-upload"
-            implementationClass = "dev.kamiql.gradle.SftpUploadPlugin"
-            displayName = "SFTP Upload Plugin"
-            description = "Provides uploadSFTP and shadowUploadSFTP tasks via SFTP"
+        create("sftpUpload") {
+            id = "dev.kamiql.sftpupload"
+            implementationClass = "dev.kamiql.SftpUploadPlugin"
         }
     }
 }
