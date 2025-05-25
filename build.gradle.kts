@@ -1,6 +1,6 @@
 plugins {
     `java-gradle-plugin`
-    alias(libs.plugins.kotlin.jvm)
+    kotlin("jvm") version "1.9.22"
     `maven-publish`
     id("de.chojo.publishdata") version "1.4.0"
 }
@@ -12,7 +12,8 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.mwiede:jsch:0.2.15")
+    implementation("com.hierynomus:sshj:0.38.0")
+    compileOnly(gradleApi())
 }
 
 group = "dev.kamiql.gradle"
@@ -20,13 +21,14 @@ version = "1.0.0"
 
 publishData {
     useEldoNexusRepos()
-
     publishComponent("java")
 }
 
 publishing {
-    publications.create<MavenPublication>("maven") {
-        publishData.configurePublication(this)
+    publications {
+        create<MavenPublication>("maven") {
+            publishData.configurePublication(this)
+        }
     }
 
     repositories.maven {
@@ -36,15 +38,9 @@ publishing {
                 password = System.getenv("NEXUS_PASSWORD")
             }
         }
-
         name = "eldonexus"
         url = uri(publishData.getRepository())
     }
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
 }
 
 gradlePlugin {
@@ -56,4 +52,10 @@ gradlePlugin {
             description = "Provides uploadSFTP and shadowUploadSFTP tasks via SFTP"
         }
     }
+}
+
+tasks.jar {
+    from(configurations.runtimeClasspath.get().filter {
+        it.name.startsWith("sshj")
+    }.map { zipTree(it) })
 }
