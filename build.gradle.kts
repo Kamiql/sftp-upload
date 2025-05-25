@@ -1,10 +1,12 @@
 plugins {
-    id("de.chojo.publishdata") version "1.4.0"
     kotlin("jvm") version "2.0.0-RC1"
     `kotlin-dsl`
     `maven-publish`
     `java-gradle-plugin`
 }
+
+group = "dev.kamiql"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -16,31 +18,12 @@ dependencies {
     compileOnly(gradleApi())
 }
 
-group = "dev.kamiql"
-version = "1.0.0"
-
-publishData {
-    useEldoNexusRepos()
-    publishComponent("java")
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            publishData.configurePublication(this)
-        }
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
-
-    repositories.maven {
-        authentication {
-            credentials(PasswordCredentials::class) {
-                username = System.getenv("NEXUS_USERNAME")
-                password = System.getenv("NEXUS_PASSWORD")
-            }
-        }
-        name = "eldonexus"
-        url = uri(publishData.getRepository())
-    }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 gradlePlugin {
@@ -51,6 +34,42 @@ gradlePlugin {
         }
     }
 }
+
+publishing {
+    repositories {
+        maven {
+            group = project.group as String
+            authentication {
+                credentials(PasswordCredentials::class) {
+                    username = System.getenv("NEXUS_USERNAME")
+                    password = System.getenv("NEXUS_PASSWORD")
+                }
+            }
+
+            val branch = System.getenv("GITHUB_REF")?.replace("refs/heads/", "") ?: ""
+
+            url = uri(when (branch) {
+                "main", "master" -> "https://eldonexus.de/repository/maven-releases/"
+                "dev" -> "https://eldonexus.de/repository/maven-dev/"
+                else -> "https://eldonexus.de/repository/maven-snapshots/"
+            })
+
+            version = when (branch) {
+                "main", "master" -> version
+                "dev" -> version.toString().plus("-DEV")
+                else -> version.toString().plus("-SNAPSHOT")
+            }
+            name = "EldoNexus"
+        }
+    }
+}
+
+tasks {
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
 
 tasks.jar {
     from(configurations.runtimeClasspath.get().filter {
