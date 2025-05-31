@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fc1857aa-977b-4151-93cb-25ec8a10cfa0" name="Changes" comment="feat: Finished plugin. Stable 1.0.0" />
+    <list default="true" id="fc1857aa-977b-4151-93cb-25ec8a10cfa0" name="Changes" comment="refactor: workflow fix">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/kamiql/SftpUploadPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/kamiql/SftpUploadPlugin.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,24 +35,7 @@
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="SFTPUpload" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="SFTPUpload" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="SFTPUpload" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="SFTPUpload" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="shadow" type="c8890929:TasksNode$1" />
+                <item name="sftpupload" type="f1a62948:ProjectNode" />
               </path>
             </expand>
             <select />
@@ -95,32 +84,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Gradle.D:/Development/IdeaProjects/SFTPUpload [init].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SFTPUpload [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SFTPUpload [init].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SFTPUpload [jar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SFTPUpload [publishToMavenLocal].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SFTPUpload [publish] (1).executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SFTPUpload [publish].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SFTPUpload [shadowJar].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Gradle.D:/Development/IdeaProjects/SFTPUpload [init].executor": "Run",
+    "Gradle.SFTPUpload [build].executor": "Run",
+    "Gradle.SFTPUpload [init].executor": "Run",
+    "Gradle.SFTPUpload [jar].executor": "Run",
+    "Gradle.SFTPUpload [publishToMavenLocal].executor": "Run",
+    "Gradle.SFTPUpload [publish] (1).executor": "Run",
+    "Gradle.SFTPUpload [publish].executor": "Run",
+    "Gradle.SFTPUpload [shadowJar].executor": "Run",
+    "Gradle.SFTPUpload [wrapper].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Development\IdeaProjects\SFTPUpload" />
@@ -131,6 +121,7 @@
     <option name="myCommands">
       <command value="gradle init" />
       <command value="./gradlew publishToMavenLocal " />
+      <command value="gradle wrapper" />
     </option>
   </component>
   <component name="RunManager" selected="Gradle.SFTPUpload [wrapper]">
@@ -268,6 +259,12 @@
       <workItem from="1748138951103" duration="2950000" />
       <workItem from="1748142007071" duration="2966000" />
       <workItem from="1748176000429" duration="3510000" />
+      <workItem from="1748187167278" duration="403000" />
+      <workItem from="1748200909431" duration="5385000" />
+      <workItem from="1748208668375" duration="652000" />
+      <workItem from="1748210199270" duration="4000" />
+      <workItem from="1748211697348" duration="7000" />
+      <workItem from="1748717672835" duration="975000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Added core features (all functional) #EXPERIMENTAL">
       <option name="closed" value="true" />
@@ -309,7 +306,47 @@
       <option name="project" value="LOCAL" />
       <updated>1748187081039</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Gradlew missing">
+      <option name="closed" value="true" />
+      <created>1748187344509</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1748187344509</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fixxed some stuff ig">
+      <option name="closed" value="true" />
+      <created>1748203307860</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1748203307860</updated>
+    </task>
+    <task id="LOCAL-00008" summary="refactor: Updated publication impl">
+      <option name="closed" value="true" />
+      <created>1748204711179</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1748204711179</updated>
+    </task>
+    <task id="LOCAL-00009" summary="refactor: workflow fix">
+      <option name="closed" value="true" />
+      <created>1748205108706</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1748205108706</updated>
+    </task>
+    <task id="LOCAL-00010" summary="refactor: workflow fix">
+      <option name="closed" value="true" />
+      <created>1748206275265</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1748206275265</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -345,6 +382,10 @@
     <MESSAGE value="refactor: publish.yml workflow updated" />
     <MESSAGE value="feat: save progress" />
     <MESSAGE value="feat: Finished plugin. Stable 1.0.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Finished plugin. Stable 1.0.0" />
+    <MESSAGE value="Gradlew missing" />
+    <MESSAGE value="fixxed some stuff ig" />
+    <MESSAGE value="refactor: Updated publication impl" />
+    <MESSAGE value="refactor: workflow fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: workflow fix" />
   </component>
 </project>
