@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fc1857aa-977b-4151-93cb-25ec8a10cfa0" name="Changes" comment="BREAKING: you can push to multiple servers now.">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/publish.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/publish.yml" afterDir="false" />
+    <list default="true" id="fc1857aa-977b-4151-93cb-25ec8a10cfa0" name="Changes" comment="refactor: changes in publish.yml workflow">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/kamiql/SftpUploadPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/kamiql/SftpUploadPlugin.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -261,6 +261,8 @@
       <workItem from="1748210199270" duration="4000" />
       <workItem from="1748211697348" duration="7000" />
       <workItem from="1748717672835" duration="1290000" />
+      <workItem from="1748719077016" duration="66000" />
+      <workItem from="1748719183433" duration="590000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Added core features (all functional) #EXPERIMENTAL">
       <option name="closed" value="true" />
@@ -350,7 +352,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748718711852</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="refactor: changes in publish.yml workflow">
+      <option name="closed" value="true" />
+      <created>1748719129610</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1748719129610</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -391,6 +401,7 @@
     <MESSAGE value="refactor: Updated publication impl" />
     <MESSAGE value="refactor: workflow fix" />
     <MESSAGE value="BREAKING: you can push to multiple servers now." />
-    <option name="LAST_COMMIT_MESSAGE" value="BREAKING: you can push to multiple servers now." />
+    <MESSAGE value="refactor: changes in publish.yml workflow" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: changes in publish.yml workflow" />
   </component>
 </project>

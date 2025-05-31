@@ -8,7 +8,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.Internal
 import java.io.File
@@ -37,7 +36,7 @@ open class SftpExtension {
      * }
      */
     @Input
-    var servers: Map<String, Entry> = emptyMap()
+    var servers: Map<String, Server> = emptyMap()
 
     @Input
     var targetDir: String = ""
@@ -45,7 +44,7 @@ open class SftpExtension {
     @Input
     var buildType: BuildType = BuildType.NORMAL
 
-    class Entry {
+    class Server {
         @Input
         lateinit var host: String
 
@@ -67,12 +66,7 @@ abstract class SftpUploadTask : DefaultTask() {
     protected val projectObj: Project = project
 
     @Input
-    @Optional
     var config: SftpExtension = SftpExtension()
-
-    @Input
-    @Optional
-    var serverKey: String? = null
 
     init {
         group = "sftp"
@@ -88,30 +82,25 @@ abstract class SftpUploadTask : DefaultTask() {
 
         require(config.servers.isNotEmpty()) { "Es wurden keine Server in 'sftp.servers' konfiguriert." }
 
-        val key = serverKey
-            ?: projectObj.findProperty("ftp.server")?.toString()
-            ?: throw IllegalArgumentException("Kein 'ftp.server'-Key angegeben. Bitte mit '-Pftp.server=<deinKey>' aufrufen.")
+        config.servers.forEach { name, entry ->
+            require(config.targetDir.isNotBlank()) { "targetDir (remote path) muss in der Extension konfiguriert sein." }
 
-        val entry = config.servers[key]
-            ?: throw IllegalArgumentException("Kein Server-Entry für den Key '$key' gefunden. Verfügbare Keys: ${config.servers.keys}")
+            val jarFile = when (config.buildType) {
+                BuildType.SHADOW -> getShadowJarFile()
+                BuildType.NORMAL -> getNormalJarFile()
+            }
+            require(jarFile.exists()) { "Keine JAR-Datei gefunden, die hochgeladen werden kann." }
 
-        require(config.targetDir.isNotBlank()) { "targetDir (remote path) muss in der Extension konfiguriert sein." }
+            createClient(entry).use { sftp ->
+                logger.lifecycle("Connected to ${entry.host}:${entry.port} as ${entry.username}")
+                createRemoteDirectory(sftp, config.targetDir)
 
-        val jarFile = when (config.buildType) {
-            BuildType.SHADOW -> getShadowJarFile()
-            BuildType.NORMAL -> getNormalJarFile()
-        }
-        require(jarFile.exists()) { "Keine JAR-Datei gefunden, die hochgeladen werden kann." }
+                val remotePath = "${config.targetDir}/${jarFile.name}"
+                logger.lifecycle("Uploading ${jarFile.name} to $remotePath...")
 
-        createClient(entry).use { sftp ->
-            logger.lifecycle("Connected to ${entry.host}:${entry.port} as ${entry.username}")
-            createRemoteDirectory(sftp, config.targetDir)
-
-            val remotePath = "${config.targetDir}/${jarFile.name}"
-            logger.lifecycle("Uploading ${jarFile.name} to $remotePath...")
-
-            sftp.put(jarFile.absolutePath, remotePath)
-            logger.lifecycle("Successfully uploaded: ${jarFile.name}")
+                sftp.put(jarFile.absolutePath, remotePath)
+                logger.lifecycle("Successfully uploaded: ${jarFile.name}")
+            }
         }
     }
 
@@ -129,7 +118,7 @@ abstract class SftpUploadTask : DefaultTask() {
             .get().outputs.files.singleFile
     }
 
-    private fun createClient(entry: SftpExtension.Entry): SFTPClient {
+    private fun createClient(entry: SftpExtension.Server): SFTPClient {
         val ssh = SSHClient().apply {
             addHostKeyVerifier(PromiscuousVerifier())
             connect(entry.host, entry.port)
