@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fc1857aa-977b-4151-93cb-25ec8a10cfa0" name="Changes" comment="refactor: workflow fix">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+    <list default="true" id="fc1857aa-977b-4151-93cb-25ec8a10cfa0" name="Changes" comment="BREAKING: you can push to multiple servers now.">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/publish.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/publish.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/kamiql/SftpUploadPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/kamiql/SftpUploadPlugin.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,33 +81,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Gradle.D:/Development/IdeaProjects/SFTPUpload [init].executor": "Run",
-    "Gradle.SFTPUpload [build].executor": "Run",
-    "Gradle.SFTPUpload [init].executor": "Run",
-    "Gradle.SFTPUpload [jar].executor": "Run",
-    "Gradle.SFTPUpload [publishToMavenLocal].executor": "Run",
-    "Gradle.SFTPUpload [publish] (1).executor": "Run",
-    "Gradle.SFTPUpload [publish].executor": "Run",
-    "Gradle.SFTPUpload [shadowJar].executor": "Run",
-    "Gradle.SFTPUpload [wrapper].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Gradle.D:/Development/IdeaProjects/SFTPUpload [init].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SFTPUpload [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SFTPUpload [init].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SFTPUpload [jar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SFTPUpload [publishToMavenLocal].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SFTPUpload [publish] (1).executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SFTPUpload [publish].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SFTPUpload [shadowJar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SFTPUpload [wrapper].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Development\IdeaProjects\SFTPUpload" />
@@ -264,7 +260,7 @@
       <workItem from="1748208668375" duration="652000" />
       <workItem from="1748210199270" duration="4000" />
       <workItem from="1748211697348" duration="7000" />
-      <workItem from="1748717672835" duration="975000" />
+      <workItem from="1748717672835" duration="1290000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Added core features (all functional) #EXPERIMENTAL">
       <option name="closed" value="true" />
@@ -346,7 +342,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748206275265</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="BREAKING: you can push to multiple servers now.">
+      <option name="closed" value="true" />
+      <created>1748718711852</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1748718711852</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -386,6 +390,7 @@
     <MESSAGE value="fixxed some stuff ig" />
     <MESSAGE value="refactor: Updated publication impl" />
     <MESSAGE value="refactor: workflow fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: workflow fix" />
+    <MESSAGE value="BREAKING: you can push to multiple servers now." />
+    <option name="LAST_COMMIT_MESSAGE" value="BREAKING: you can push to multiple servers now." />
   </component>
 </project>
