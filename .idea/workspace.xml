@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fc1857aa-977b-4151-93cb-25ec8a10cfa0" name="Changes" comment="refactor: coroutines operations added">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/kamiql/SftpUploadPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/kamiql/SftpUploadPlugin.kt" afterDir="false" />
+    <list default="true" id="fc1857aa-977b-4151-93cb-25ec8a10cfa0" name="Changes" comment="refactor: coroutines removed">
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -277,7 +276,7 @@
       <workItem from="1748722185753" duration="316000" />
       <workItem from="1748722544681" duration="6000" />
       <workItem from="1748722977547" duration="784000" />
-      <workItem from="1748802301366" duration="2845000" />
+      <workItem from="1748802301366" duration="3157000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Added core features (all functional) #EXPERIMENTAL">
       <option name="closed" value="true" />
@@ -391,7 +390,23 @@
       <option name="project" value="LOCAL" />
       <updated>1748804502694</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="refactor: coroutines fixxed">
+      <option name="closed" value="true" />
+      <created>1748805288328</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1748805288328</updated>
+    </task>
+    <task id="LOCAL-00016" summary="refactor: coroutines removed">
+      <option name="closed" value="true" />
+      <created>1748805333597</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1748805333597</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -435,6 +450,8 @@
     <MESSAGE value="refactor: changes in publish.yml workflow" />
     <MESSAGE value="refactor: hab gefettfingert" />
     <MESSAGE value="refactor: coroutines operations added" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: coroutines operations added" />
+    <MESSAGE value="refactor: coroutines fixxed" />
+    <MESSAGE value="refactor: coroutines removed" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: coroutines removed" />
   </component>
 </project>
