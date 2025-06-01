@@ -1,9 +1,5 @@
 package dev.kamiql
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.sftp.SFTPClient
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier
@@ -15,6 +11,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.Internal
 import java.io.File
+import java.util.concurrent.Executors
 
 open class SftpExtension {
     @Input
@@ -56,7 +53,7 @@ abstract class SftpUploadTask : DefaultTask() {
     }
 
     @TaskAction
-    fun upload() = runBlocking {
+    fun upload() {
         logger.lifecycle("=============>")
         logger.lifecycle("SFTP Upload Plugin v${project.version}")
         logger.lifecycle("=============>")
@@ -72,37 +69,38 @@ abstract class SftpUploadTask : DefaultTask() {
 
         require(jarFile.exists()) { "Keine JAR-Datei gefunden, die hochgeladen werden kann." }
 
-        val uploadJobs = config.servers.map { (name, entry) ->
-            async {
+        val threadCount = config.servers.size.coerceAtLeast(1)
+        val executor = Executors.newFixedThreadPool(threadCount)
+        val futures = config.servers.map { (name, entry) ->
+            executor.submit {
                 uploadToServer(name, entry, jarFile)
             }
         }
 
-        uploadJobs.forEach { it.await() }
+        futures.forEach { it.get() }
+        executor.shutdown()
 
         logger.lifecycle("Alle Uploads abgeschlossen.")
     }
 
-    private suspend fun uploadToServer(name: String, entry: SftpExtension.Server, jarFile: File) {
-        withContext(Dispatchers.IO) {
-            val ssh = SSHClient().apply {
-                timeout = 30_000
-                addHostKeyVerifier(PromiscuousVerifier())
-                connect(entry.host, entry.port)
-                authPassword(entry.username, entry.password)
-            }
+    private fun uploadToServer(name: String, entry: SftpExtension.Server, jarFile: File) {
+        val ssh = SSHClient().apply {
+            timeout = 30_000
+            addHostKeyVerifier(PromiscuousVerifier())
+            connect(entry.host, entry.port)
+            authPassword(entry.username, entry.password)
+        }
 
-            ssh.use { client ->
-                client.newSFTPClient().use { sftp ->
-                    logger.lifecycle("[$name] Connected to ${entry.host}:${entry.port} as ${entry.username}")
-                    createRemoteDirectory(sftp, config.targetDir)
+        ssh.use { client ->
+            client.newSFTPClient().use { sftp ->
+                logger.lifecycle("[$name] Connected to ${entry.host}:${entry.port} as ${entry.username}")
+                createRemoteDirectory(sftp, config.targetDir)
 
-                    val remotePath = "${config.targetDir}/${jarFile.name}"
-                    logger.lifecycle("[$name] Uploading ${jarFile.name} to $remotePath...")
+                val remotePath = "${config.targetDir}/${jarFile.name}"
+                logger.lifecycle("[$name] Uploading ${jarFile.name} to $remotePath...")
 
-                    sftp.put(jarFile.absolutePath, remotePath)
-                    logger.lifecycle("[$name] Successfully uploaded: ${jarFile.name}")
-                }
+                sftp.put(jarFile.absolutePath, remotePath)
+                logger.lifecycle("[$name] Successfully uploaded: ${jarFile.name}")
             }
         }
     }
