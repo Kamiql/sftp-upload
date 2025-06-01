@@ -1,5 +1,9 @@
 package dev.kamiql
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.sftp.SFTPClient
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier
@@ -13,28 +17,6 @@ import org.gradle.api.tasks.Internal
 import java.io.File
 
 open class SftpExtension {
-    /**
-     * Beispiel-Aufbau in build.gradle.kts:
-     *
-     * sftp {
-     *   servers = mapOf(
-     *     "staging" to Entry().apply {
-     *       host = "staging.example.com"
-     *       port = 22
-     *       username = "user_stage"
-     *       password = "pass_stage"
-     *     },
-     *     "production" to Entry().apply {
-     *       host = "prod.example.com"
-     *       port = 2222
-     *       username = "user_prod"
-     *       password = "pass_prod"
-     *     }
-     *   )
-     *   targetDir = "/plugins"
-     *   buildType = dev.kamiql.BuildType.SHADOW
-     * }
-     */
     @Input
     var servers: Map<String, Server> = emptyMap()
 
@@ -70,36 +52,57 @@ abstract class SftpUploadTask : DefaultTask() {
 
     init {
         group = "sftp"
-        description = "Uploads build artifacts via SFTP (multi-server support)"
+        description = "Uploads build artifacts via SFTP (multi-server support, parallel)"
     }
 
     @TaskAction
-    fun upload() {
+    fun upload() = runBlocking {
         logger.lifecycle("=============>")
         logger.lifecycle("SFTP Upload Plugin v${project.version}")
         logger.lifecycle("=============>")
         logger.lifecycle("Starting SFTP Upload (BuildType=${config.buildType})...")
 
         require(config.servers.isNotEmpty()) { "Es wurden keine Server in 'sftp.servers' konfiguriert." }
+        require(config.targetDir.isNotBlank()) { "targetDir (remote path) muss in der Extension konfiguriert sein." }
 
-        config.servers.forEach { name, entry ->
-            require(config.targetDir.isNotBlank()) { "targetDir (remote path) muss in der Extension konfiguriert sein." }
+        val jarFile = when (config.buildType) {
+            BuildType.SHADOW -> getShadowJarFile()
+            BuildType.NORMAL -> getNormalJarFile()
+        }
 
-            val jarFile = when (config.buildType) {
-                BuildType.SHADOW -> getShadowJarFile()
-                BuildType.NORMAL -> getNormalJarFile()
+        require(jarFile.exists()) { "Keine JAR-Datei gefunden, die hochgeladen werden kann." }
+
+        val uploadJobs = config.servers.map { (name, entry) ->
+            async {
+                uploadToServer(name, entry, jarFile)
             }
-            require(jarFile.exists()) { "Keine JAR-Datei gefunden, die hochgeladen werden kann." }
+        }
 
-            createClient(entry).use { sftp ->
-                logger.lifecycle("Connected to ${entry.host}:${entry.port} as ${entry.username}")
-                createRemoteDirectory(sftp, config.targetDir)
+        uploadJobs.forEach { it.await() }
 
-                val remotePath = "${config.targetDir}/${jarFile.name}"
-                logger.lifecycle("Uploading ${jarFile.name} to $remotePath...")
+        logger.lifecycle("Alle Uploads abgeschlossen.")
+    }
 
-                sftp.put(jarFile.absolutePath, remotePath)
-                logger.lifecycle("Successfully uploaded: ${jarFile.name}")
+    private suspend fun uploadToServer(name: String, entry: SftpExtension.Server, jarFile: File) {
+        withContext(Dispatchers.IO) {
+            val ssh = SSHClient().apply {
+                timeout = 30_000
+                addHostKeyVerifier(PromiscuousVerifier())
+                connect(entry.host, entry.port)
+                authPassword(entry.username, entry.password)
+            }
+
+            ssh.use { client ->
+                client.newSFTPClient().use { sftp ->
+                    logger.lifecycle("[$name] Connected to ${entry.host}:${entry.port} as ${entry.username}")
+                    createRemoteDirectory(sftp, config.targetDir)
+
+                    val remotePath = "${config.targetDir}/${jarFile.name}"
+                    logger.lifecycle("[$name] Uploading ${jarFile.name} to $remotePath...")
+
+                    sftp.put(jarFile.absolutePath, remotePath)
+                    logger.lifecycle("[$name] Successfully uploaded: ${jarFile.name}")
+                }
             }
         }
     }
@@ -118,15 +121,6 @@ abstract class SftpUploadTask : DefaultTask() {
             .get().outputs.files.singleFile
     }
 
-    private fun createClient(entry: SftpExtension.Server): SFTPClient {
-        val ssh = SSHClient().apply {
-            addHostKeyVerifier(PromiscuousVerifier())
-            connect(entry.host, entry.port)
-            authPassword(entry.username, entry.password)
-        }
-        return ssh.newSFTPClient()
-    }
-    
     private fun createRemoteDirectory(client: SFTPClient, path: String) {
         var current = ""
         for (part in path.split("/").filter { it.isNotEmpty() }) {
@@ -146,13 +140,13 @@ class SftpUploadPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension = project.extensions.create("sftp", SftpExtension::class.java)
         project.afterEvaluate {
-            project.tasks.register("uploadSFTP", SftpUploadTask::class.java, {
+            project.tasks.register("uploadSFTP", SftpUploadTask::class.java) {
                 config = extension
                 when (extension.buildType) {
                     BuildType.SHADOW -> dependsOn("shadowJar")
                     BuildType.NORMAL -> dependsOn("assemble")
                 }
-            })
+            }
         }
     }
 }
