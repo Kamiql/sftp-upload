@@ -17,7 +17,6 @@ dependencies {
     implementation("com.hierynomus:sshj:0.38.0")
     compileOnly(gradleApi())
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 }
 
 java {
@@ -74,6 +73,6 @@ tasks {
 
 tasks.jar {
     from(configurations.runtimeClasspath.get().filter {
-        it.name.startsWith("sshj") || it.name.startsWith("kotlinx-coroutines")
+        it.name.startsWith("sshj")
     }.map { zipTree(it) })
 }
