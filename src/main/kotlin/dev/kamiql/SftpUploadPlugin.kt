@@ -38,7 +38,7 @@ open class SftpExtension {
     }
 }
 
-enum class BuildType { NORMAL, SHADOW }
+enum class BuildType { NORMAL, SHADOW, NONE }
 
 abstract class SftpUploadTask : DefaultTask() {
     @get:Internal
@@ -65,6 +65,7 @@ abstract class SftpUploadTask : DefaultTask() {
         val jarFile = when (config.buildType) {
             BuildType.SHADOW -> getShadowJarFile()
             BuildType.NORMAL -> getNormalJarFile()
+            BuildType.NONE -> getNormalJarFile()
         }
 
         require(jarFile.exists()) { "Keine JAR-Datei gefunden, die hochgeladen werden kann." }
@@ -143,6 +144,7 @@ class SftpUploadPlugin : Plugin<Project> {
                 when (extension.buildType) {
                     BuildType.SHADOW -> dependsOn("shadowJar")
                     BuildType.NORMAL -> dependsOn("assemble")
+                    BuildType.NONE -> {}
                 }
             }
         }
